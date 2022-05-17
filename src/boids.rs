@@ -13,18 +13,14 @@ pub struct BoidBundle {
 }
 
 impl BoidBundle {
-    pub fn new(position : Vec2) -> BoidBundle {
+    pub fn new(position : Vec2, asset_server: &Res<AssetServer>) -> BoidBundle {
         BoidBundle {
             sprite_bundle: SpriteBundle {
                 transform: Transform {
                     translation: position.extend(0.0),
-                    scale: Vec3::new(10.0, 10.0, 10.0),
                     ..default()
                 },
-                sprite: Sprite {
-                    color: Color::rgb(0.4, 0.2, 0.5),
-                    ..default()
-                },
+                texture: asset_server.load("textures/boid.png"),
                 ..default()
             },
             ..default()
@@ -32,7 +28,7 @@ impl BoidBundle {
     }
 }
 
-pub fn spawn_boids_randomly<const BOID_COUNT : usize>(windows: Res<Windows>, mut commands: Commands) {
+pub fn spawn_boids_randomly<const BOID_COUNT : usize>(windows: Res<Windows>, asset_server: Res<AssetServer>, mut commands: Commands) {
     let mut rng = rand::thread_rng();
     let main_window : &Window = windows.get_primary().unwrap();
 
@@ -43,6 +39,6 @@ pub fn spawn_boids_randomly<const BOID_COUNT : usize>(windows: Res<Windows>, mut
         let x = rng.gen_range(x_range.clone()) as f32;
         let y = rng.gen_range(y_range.clone()) as f32;
 
-        commands.spawn().insert_bundle(BoidBundle::new(Vec2::new(x, y)));
+        commands.spawn().insert_bundle(BoidBundle::new(Vec2::new(x, y), &asset_server));
     }
 }
