@@ -13,6 +13,7 @@ fn main() {
             })
         .add_startup_system(init_scene)
         .add_startup_system(boids::spawn_boids_randomly::<BOID_COUNT>)
+        .add_system(boids::update_boid_positions)
         .add_plugins(DefaultPlugins)
         .run();
 }
