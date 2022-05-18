@@ -1,18 +1,20 @@
 mod boids;
-use bevy::prelude::*;
+mod simulation_configs;
 
-const BOID_COUNT: usize = 10;
+use bevy::prelude::*;
+use simulation_configs::*;
 
 fn main() {
     App::new()
         .insert_resource(WindowDescriptor {
-                width: 800.0,
-                height: 500.0,
+                width: WINDOW_WIDTH,
+                height: WINDOW_HEIGHT,
                 resizable: false,
+                title: "Boids".to_string(),
                 ..default()
             })
         .add_startup_system(init_scene)
-        .add_startup_system(boids::spawn_boids_randomly::<BOID_COUNT>)
+        .add_startup_system(boids::spawn_boids_randomly::<{simulation_configs::BOID_COUNT}>)
         .add_system(boids::update_boid_positions)
         .add_plugins(DefaultPlugins)
         .run();
